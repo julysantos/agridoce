@@ -1,4 +1,4 @@
-package com.webapp.agridoce.restaurante;
+package com.webapp.agridoce.categoriaProduto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restaurantes")
-public class RestauranteController {
+@RequestMapping("/api/categoria-produtos")
+public class CategoriaProdutoController {
     @Autowired
-    private RestauranteRepository restauranteRepository;
+    private CategoriaProdutoRepository categoriaProdutoRepository;
 
     @GetMapping
-    public List<Restaurante> listarTodosRestaurantes() {
-        return restauranteRepository.findAll();
+    public List<CategoriaProduto> listarTodasCategorias() {
+        return categoriaProdutoRepository.findAll();
     }
 }

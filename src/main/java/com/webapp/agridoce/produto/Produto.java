@@ -1,5 +1,7 @@
 package com.webapp.agridoce.produto;
 
+import com.webapp.agridoce.categoriaProduto.CategoriaProduto;
+import com.webapp.agridoce.restaurante.Restaurante;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,9 +35,9 @@ public class Produto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria_prod", referencedColumnName = "id_categoria")
-    private String categoria; //criar classe Categoria dps
+    private CategoriaProduto categoria; //criar classe Categoria dps
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_restaurante_prod", referencedColumnName = "id_restaurante")
-    private String restaurante; //criar classe Restaurante dps
+    private Restaurante restaurante; //criar classe Restaurante dps
 }
