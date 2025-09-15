@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.webapp'
+group = 'com.webapp.agridoce'
 version = '0.0.1-SNAPSHOT'
 description = 'Web App Delivery com Java Spring Boot e Angular.js'
 
@@ -34,4 +34,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+springBoot {
+	mainClass = 'com.webapp.agridoce.AgridoceApplication'
 }

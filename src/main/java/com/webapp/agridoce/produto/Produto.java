@@ -1,5 +1,6 @@
 package com.webapp.agridoce.produto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webapp.agridoce.categoriaProduto.CategoriaProduto;
 import com.webapp.agridoce.restaurante.Restaurante;
 import jakarta.persistence.*;
@@ -35,9 +36,11 @@ public class Produto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria_prod", referencedColumnName = "id_categoria")
-    private CategoriaProduto categoria; //criar classe Categoria dps
+    @JsonIgnore
+    private CategoriaProduto categoria;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_restaurante_prod", referencedColumnName = "id_restaurante")
-    private Restaurante restaurante; //criar classe Restaurante dps
+    @JsonIgnore
+    private Restaurante restaurante;
 }

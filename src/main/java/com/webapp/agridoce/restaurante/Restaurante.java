@@ -22,7 +22,7 @@ public class Restaurante {
     @Column(name = "nome_restaurante", nullable = false)
     private String nomeRestaurante;
 
-    @Column(name = "telefone_rest", nullable = false, length = 11)
+    @Column(name = "telefone_restaurante", nullable = false, length = 11)
     private String telefoneRestaurante;
 
 }
