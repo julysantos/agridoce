@@ -13,9 +13,10 @@ import lombok.Setter;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_roles")
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, unique = true)
+    @Column(name = "nome", length = 20, unique = true)
     private RoleNames name;
 }

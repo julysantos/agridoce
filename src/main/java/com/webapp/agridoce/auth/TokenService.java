@@ -14,6 +14,7 @@ import java.util.Date;
 public class TokenService {
     @Value("${app.jwt.secret}")
     private String jwtSecret;
+
     @Value("${app.jwt.expiration-ms}")
     private Long jwtExpirationMs;
 
@@ -26,12 +27,11 @@ public class TokenService {
         Date agora = new Date();
         Date dataExpiracao = new Date(agora.getTime() + jwtExpirationMs);
 
-        return Jwts.builder()
-                .setIssuer("API do Cardápio Virtual")
-                .setSubject(usuarioLogado.getUsername())
-                .setIssuedAt(agora)
-                .setExpiration(dataExpiracao)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+        return Jwts.builder().issuer("API do Cardápio Virtual")
+                .subject(usuarioLogado.getUsername())
+                .issuedAt(agora)
+                .expiration(dataExpiracao)
+                .signWith(getSigningKey())
                 .compact();
     }
 
