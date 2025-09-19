@@ -14,7 +14,7 @@ Corpo da Requisição:
   "login": "joao.silva@email.com",
   "senha": "senha_do_joao_123"
 }
-Resultado Esperado: Status 200 OK com o corpo vazio. Isso significa que o usuário foi criado.
+Resultado Esperado: Status 201 CREATED com o corpo vazio. Isso significa que o usuário foi criado.
 1.2. Fazer Login para Obter o Token
 Método: POST
 URL: http://localhost:8080/api/auth/login

@@ -25,6 +25,6 @@ public class Cliente {
     private String telefoneCliente;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario_cli", referencedColumnName = "id")
+    @JoinColumn(name = "id_usuario_cli", referencedColumnName = "id_usuario")
     private Usuario usuario;
 }
