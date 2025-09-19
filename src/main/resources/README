@@ -1,0 +1,83 @@
+#O guia não está funcional agora pois há erros na api. To tentando ajeitar ela ainda
+
+Guia de Testes da API com Postman
+Este guia descreve como testar os principais fluxos da sua API de Cardápio Virtual usando o Postman.
+
+Etapa 1: Autenticação (Obtendo seu Token)Nenhum endpoint protegido pode ser acessado sem um token JWT.
+O primeiro passo é sempre registrar um usuário e fazer login.
+1.1. Registrar um Novo Usuário
+Método: POST
+URL: http://localhost:8080/api/auth/register
+Aba: Body -> raw -> JSON
+Corpo da Requisição:
+{
+  "login": "joao.silva@email.com",
+  "senha": "senha_do_joao_123"
+}
+Resultado Esperado: Status 200 OK com o corpo vazio. Isso significa que o usuário foi criado.
+1.2. Fazer Login para Obter o Token
+Método: POST
+URL: http://localhost:8080/api/auth/login
+Aba: Body -> raw -> JSON
+Corpo da Requisição:
+{
+  "login": "joao.silva@email.com",
+  "senha": "senha_do_joao_123"
+}
+Resultado Esperado: Status 200 OK com um token no corpo da resposta.
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGVtYWlsLmNvbSIsImlzcyI6ImNhcmRhcGlvLWFwaSIsImV4cCI6MTcxNjM4ODg0Mn0.abcdef123..."
+}
+1.3. Salvar o Token
+Copie o valor do token. Nós vamos usá-lo em todas as requisições a seguir.
+Etapa 2: Testando Endpoints Protegidos
+Agora que temos um token, podemos acessar os endpoints que exigem autenticação.
+2.1. Listar Todos os Produtos (Acesso de ROLE_USER
+)Método: GET
+URL: http://localhost:8080/api/produtos
+Aba: AuthorizationType: Bearer Token
+Token: Cole o token que você copiou no passo 1.3 aqui.
+[Imagem do Postman mostrando como configurar o Bearer Token]
+Resultado Esperado: Status 200 OK com a lista de produtos que você inseriu no script V2__Popular_Dados_Iniciais.sql.
+[
+    {
+        "idProduto": 1,
+        "nomeProd": "Pizza Margherita",
+        "disponProd": "Disponível",
+        "descricaoProd": "Molho, queijo e manjericão",
+        "precoProd": 45.00,
+        // ... outros campos
+    },
+    // ... outros produtos
+]
+2.2. Tentar Criar um Produto (Falha Esperada para ROLE_USER) Este endpoint requer permissão de ROLE_ADMIN.
+Como nosso usuário joao.silva é um ROLE_USER, esperamos um erro de acesso negado.
+Método: POST
+URL: http://localhost:8080/api/produtos
+Aba Authorization: Use o mesmo token de joao.silva.
+Aba Body:
+raw -> JSON {
+    "nomeProd": "Nova Pizza de Teste",
+    "disponProd": "Disponível",
+    "descricaoProd": "Teste",
+    "precoProd": 55.00,
+    "categoria": { "id_categoria": 1 },
+    "restaurante": { "id_restaurante": 1 }
+}
+Resultado Esperado: Status 403 Forbidden. Isso confirma que sua segurança de roles está funcionando corretamente!
+Etapa 3: Testando como Administrador (ROLE_ADMIN)
+Para testar os endpoints de admin, você precisa de um usuário com ROLE_ADMIN.
+Como criar um Admin: A maneira mais fácil é criar um novo script de migração Flyway (ex: V3__Criar_Usuario_Admin.sql)
+para registrar um usuário admin e associá-lo à role de admin.
+V3__Criar_Usuario_Admin.sql:
+-- Senha é 'admin123' (já criptografada com BCrypt)
+INSERT INTO usuarios (login, senha) VALUES ('admin@email.com', '$2a$10$3z.B...hash...completo...aqui');
+-- Associa o novo usuário (id 1, se for o primeiro) à role de admin (id 2)
+INSERT INTO usuario_roles (usuario_id, role_id) VALUES (1, 2);
+(Nota: Você precisaria gerar o hash BCrypt para a senha 'admin123' primeiro).
+Depois de fazer login como admin e obter um novo token de admin, você pode testar:
+3.1. Criar um Novo Produto (Sucesso para ROLE_ADMIN)
+Método: POSTURL: http://localhost:8080/api/produtos
+Aba Authorization: Use o token do admin.
+Aba Body: O mesmo JSON do passo 2.
+2.Resultado Esperado: Status 201 Created com os dados do novo produto no corpo da resposta.
